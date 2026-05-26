@@ -1,139 +1,128 @@
-# 🎬 Amazon Prime Video — Exploratory Data Analysis
+# Amazon Prime Video — Content Catalog EDA
 
-> **Uncovering content trends, viewer preferences, and regional insights from Amazon Prime's catalog of 9,000+ titles**
+An in-depth Exploratory Data Analysis of Amazon Prime Video's content catalog using two datasets — titles metadata (9,871 records) and cast/crew credits (124,235 records). The project uncovers content diversity patterns, genre dominance, regional production trends, IMDb rating distributions, and key contributor analysis to support content strategy and recommendation optimization.
 
----
-
-## 📌 Project Overview
-
-With the rapid expansion of the streaming industry, Amazon Prime Video has established itself as one of the leading global platforms. This project performs an **in-depth Exploratory Data Analysis (EDA)** on Amazon Prime's content catalog to uncover key patterns, evaluate content diversity, and analyze viewer ratings — ultimately enabling smarter, data-driven content strategy decisions.
+**Author:** Ashwin Suryawanshi | **Type:** Individual Project
 
 ---
 
-## 🗂️ Dataset Description
+## Files in This Repository
 
-The analysis is based on **two interconnected datasets**:
-
-| Dataset | Records | Description |
-|---|---|---|
-| `titles.csv` | 9,871 rows × 15 columns | Metadata for all movies & TV shows |
-| `credits.csv` | 124,235 rows × 5 columns | Cast & crew mapped to each title |
-
-### Key Features
-
-**titles.csv** — Show type, genres, production countries, IMDb scores, release years, runtime, age certification, TMDb popularity
-
-**credits.csv** — Actor/director names, roles, character names, linked to title IDs
+| File | Description |
+|------|-------------|
+| `EDA_On_Amazon_Prime_By_Ashwin_Suryawanshi.ipynb` | Full EDA notebook — 2-dataset merge, 5-step data wrangling, 20+ Plotly/Seaborn charts across UBM framework |
 
 ---
 
-## 🎯 Business Objective
+## Tools & Technologies
 
-| Stakeholder | Objective |
-|---|---|
-| Content Team | Identify high-performing genres for acquisition |
-| Engineering | Improve recommendation algorithm accuracy |
-| Marketing | Target campaigns by audience age & geography |
-| Strategy | Recognize underserved regional markets |
+- **Python** — Pandas, NumPy
+- **Visualization** — Plotly Express, Plotly Graph Objects, Plotly Subplots, Matplotlib, Seaborn
+- **Jupyter Notebook** — Google Colab
 
 ---
 
-## 🔍 Analysis Workflow
+## Datasets
 
-```
-Data Loading → Data Cleaning → EDA → Visualization → Insights → Business Recommendations
-```
+Two datasets merged on `id` for analysis:
 
-### Phases Covered
+**titles.csv — Content Metadata (9,871 records × 15 columns)**
 
-1. **Know Your Data** — Shape, dtypes, first look
-2. **Data Wrangling** — Handling missing values, removing duplicates, feature extraction
-3. **Univariate Analysis** — Individual variable distributions
-4. **Bivariate Analysis** — Cross-variable relationships (Num-Cat, Num-Num, Cat-Cat)
-5. **Multivariate Analysis** — Heatmaps, pair plots, combined trend charts
+| Column | Description |
+|--------|-------------|
+| `id` | Unique title identifier |
+| `title` | Name of movie or TV show |
+| `type` | MOVIE or SHOW |
+| `description` | Synopsis |
+| `release_year` | Year of release |
+| `age_certification` | Age rating (PG-13, R, TV-MA, etc.) — 6,487 missing |
+| `runtime` | Duration in minutes |
+| `genres` | List of genres |
+| `production_countries` | Country/countries of production |
+| `seasons` | Number of seasons (TV shows only) — 8,514 missing |
+| `imdb_id` | IMDb unique identifier |
+| `imdb_score` | IMDb average user rating — 1,021 missing |
+| `imdb_votes` | Number of IMDb votes — 1,031 missing |
+| `tmdb_popularity` | TMDb popularity score — 547 missing |
+| `tmdb_score` | TMDb average rating — 2,082 missing |
 
----
+**credits.csv — Cast & Crew (124,235 records × 5 columns)**
 
-## 📊 Key Visualizations & Insights
-
-### 🎞️ Content Distribution
-- **Movies dominate** the platform over TV Shows, indicating a film-first content strategy
-- Content releases show a **strong upward trend post-2015**, peaking in recent years
-
-### 🌍 Regional Insights
-- **USA, India, and UK** are the top content-producing countries
-- Significant underrepresentation of content from **South America and Africa** — an opportunity for platform expansion
-
-### 🎭 Genre Analysis
-- **Drama, Comedy, and Action** are the most common genres
-- Niche genres tend to carry **higher average IMDb scores**, suggesting quality over quantity
-- Genre trends over time show the **rise of thriller and documentary content**
-
-### ⭐ Ratings & Quality
-- IMDb score distribution is **right-skewed** — most content clusters between 5.5–7.5
-- **Box plots by genre** reveal which genres consistently outperform others in critical reception
-- Age certification analysis shows **TV-MA and R-rated content** dominate, informing adult-focused marketing
-
-### 🎬 Contributor Analysis
-- Top directors and actors are mapped to their content's performance metrics
-- A small group of **prolific contributors** accounts for a disproportionately large portion of high-rated titles
-
-### 🔗 Correlation Findings
-- Moderate **positive correlation** between TMDb popularity and IMDb votes
-- Runtime shows **minimal impact** on IMDb scores — quality trumps length
+| Column | Description |
+|--------|-------------|
+| `person_id` | Unique person identifier |
+| `id` | Foreign key linking to titles.csv |
+| `name` | Actor or crew member name |
+| `character` | Role played by actor — 16,287 missing |
+| `role` | ACTOR, DIRECTOR, or WRITER |
 
 ---
 
-## 🛠️ Tech Stack
+## Data Wrangling
 
-```python
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-import plotly.express as px
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-```
-
-| Library | Purpose |
-|---|---|
-| Pandas & NumPy | Data manipulation |
-| Matplotlib & Seaborn | Static visualizations |
-| Plotly | Interactive charts |
+| Step | Action |
+|------|--------|
+| 1 | Merged titles.csv and credits.csv on `id` (left join) — created enriched master dataset |
+| 2 | Selected 18 key columns for analysis |
+| 3 | Removed 56 duplicate rows from credits.csv and 3 from titles.csv |
+| 4 | Imputed numerical missing values (imdb_score, tmdb_score, runtime) with median |
+| 5 | Dropped rows with missing `description` or `character` (critical columns) |
 
 ---
 
-## 📁 Project Structure
+## Charts (20+ — UBM Framework)
 
-```
-Amazon-Prime-EDA/
-├── EDA_On_Amazon_Prime_By_Ashwin_Suryawanshi.ipynb
-├── titles.csv
-├── credits.csv
-└── README.md
-```
+### Univariate Analysis
+| Chart | Type | Key Insight |
+|-------|------|-------------|
+| Distribution of IMDb Scores | Histogram + KDE | Roughly normal / slightly right-skewed; most titles cluster in a mid-high range |
+| Content Type Distribution | Donut Chart | Shows proportion of Movies vs TV Shows on the platform |
+| Top 10 Most Popular Genres | Bar Chart | Reveals dominant genre categories driving the catalog |
+| Runtime Distribution | Histogram | Most movies fall within a standard runtime range; TV shows show wider spread |
+| Release Year Distribution | Histogram | Content heavily skewed toward recent years (post-2000) |
+
+### Bivariate Analysis
+| Chart | Type | Key Insight |
+|-------|------|-------------|
+| IMDb Score vs TMDb Popularity | Scatter Plot (color by genre) | Weak positive correlation — high scores don't always mean high popularity |
+| Content Releases Over Years | Line Chart (by type) | Consistent growth in both Movies and TV Shows; streaming era acceleration post-2015 |
+| IMDb Score by Genre | Box Plot | Drama and documentary genres have higher median ratings; comedy has wider spread |
+| Top Production Countries | Bar Chart | USA dominates; India, UK, and Japan are secondary producers |
+| Genre Trend Over Time | Stacked Area Chart | Drama remains consistently dominant; thriller/crime grew significantly post-2010 |
+
+### Multivariate Analysis
+| Chart | Type | Key Insight |
+|-------|------|-------------|
+| IMDb Score vs Runtime by Content Type | Scatter (colored by type) | Movies with longer runtime tend to score higher; TV shows show less correlation |
+| Genre vs Production Country Heatmap | Heatmap | Reveals country-specific genre specializations |
+| Rating vs Release Year by Type | Multi-line Chart | Older content tends to have higher IMDb scores (survivor bias) |
+| Top Directors by Content Count | Horizontal Bar | Identifies key contributors driving catalog volume |
+| Top Actors by Appearance | Horizontal Bar | Maps most prolific actors across the Prime catalog |
 
 ---
 
-## 💡 Business Recommendations
+## Key Insights
 
-- **Content Acquisition:** Prioritize genres with consistently high IMDb scores and underrepresented regions
-- **Recommendation Engine:** Leverage correlations between TMDb popularity and IMDb votes for better suggestions
-- **Original Content:** Invest in high-scoring niche genres for differentiation from competitors
-- **Regional Expansion:** Africa and South America remain significantly underserved — a growth opportunity
-
----
-
-## 👨‍💻 Author
-
-**Ashwin Suryawanshi**
-*EDA Capstone Project | Individual Contribution*
-
-> 📌 Amazon Prime Video — Exploratory Data Analysis on Content Trends, Viewer Ratings & Regional Insights
+- **Movies dominate** the catalog significantly over TV Shows in raw count
+- **Drama is the #1 genre** — most frequent and consistently high-rated across years
+- **USA is the top producer** by far, followed by India and the UK
+- **IMDb and TMDb scores show weak correlation** — platform popularity ≠ critic quality
+- **Content releases accelerated sharply post-2015** — streaming era boom clearly visible
+- **Older titles score higher on IMDb** — survivor bias means only high-quality older content remains
+- **6,487 missing age certifications** — gap in content moderation metadata
 
 ---
 
-## 📜 License
+## Business Recommendations
 
-This project is for educational and analytical purposes only.
+1. **Expand regional content** — India and South Korea are underserved relative to their audience size
+2. **Invest in Drama and Thriller** — highest ratings + consistent viewer demand
+3. **Optimize recommendation algorithm** — TMDb popularity and IMDb score should be weighted separately
+4. **Fill age certification gaps** — 6,487 missing ratings create content moderation risk
+5. **Leverage top-performing directors** — repeat collaborations with high-rated directors drive quality perception
+
+---
+
+## Topics
+
+`eda` `python` `plotly` `seaborn` `amazon-prime` `streaming` `data-analysis` `pandas` `content-analytics` `imdb`
